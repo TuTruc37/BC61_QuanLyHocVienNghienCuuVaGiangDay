@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Quản lý Học viện nghiên cứu và giảng dạy</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <!-- Bootstrap CSS v5.2.1 -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
+
+    <!-- FontAwesome 6.2.0 CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+      integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+  </head>
+
+  <body>
+    <div class="container">
+      <h1>Quản lý học viện nghiên cứu và giảng dạy</h1>
+      <!-- form -->
+      <div>
+        <form>
+          <div class="row mt-5">
+            <div class="col-3">
+              <button
+                class="btn btn-warning btn-lg"
+                id="btn_themNguoiDung"
+                type="button"
+                data-bs-toggle="modal"
+                data-bs-target="#modalId"
+              >
+                Thêm người dùng
+              </button>
+            </div>
+            <div class="col-3">
+              <input
+                oninput="searchUser(event)"
+                type="text"
+                class="form-control"
+                name=""
+                id="txt-Search"
+                aria-describedby="helpId"
+                placeholder="Tìm kiếm theo tên"
+              />
+            </div>
+            <div class="col-3">
+              <select
+                onclick="filterDT()"
+                class="form-select form-select-lg"
+                name=""
+                id="select-doiTuongOutput"
+              >
+                <option value="All">All</option>
+                <option value="Student">Student</option>
+                <option value="Employee">Employee</option>
+                <option value="Customer">Customer</option>
+              </select>
+            </div>
+            <div class="col-3">
+              <select
+                class="form-select form-select-lg"
+                name=""
+                id="nameSelect"
+                onchange="sortNames()"
+              >
+                <option selected disabled>
+                  Sắp xếp danh sách theo thứ tự họ tên
+                </option>
+                <option value="asc">Từ a đến z</option>
+                <option value="desc">Từ z đến a</option>
+              </select>
+            </div>
+          </div>
+        </form>
+      </div>
+      <!-- table  -->
+      <div class="mt-5">
+        <table class="table table-success">
+          <thead>
+            <tr>
+              <th scope="col">Mã</th>
+              <th scope="col">Họ và tên</th>
+              <th scope="col">Email</th>
+              <th scope="col">Người dùng</th>
+              <th scope="col">Thông tin riêng</th>
+              <th scope="col"><i class="fa-solid fa-gear"></i></th>
+            </tr>
+          </thead>
+          <tbody id="tbodyTable"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="modalId"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="modalTitleId"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalTitleId">
+              Quản lý Học viện nghiên cứu và giảng dạy
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form class="container-fluid" id="formModal">
+              <div class="mb-3">
+                <label for="" class="form-label">Loại đối tượng</label>
+                <select
+                  class="form-select form-select-lg"
+                  name=""
+                  id="select_doiTuongInput"
+                >
+                  <option value="">Loại đối tượng</option>
+                  <option value="Student">Student</option>
+                  <option value="Employee">Employee</option>
+                  <option value="Customer">Customer</option>
+                </select>
+                <span class="sp-thongbao" id="tbSelect"></span>
+              </div>
+              <div class="mb-3">
+                <label for="" class="form-label">Mã số</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  name=""
+                  id="ma"
+                  aria-describedby="helpId"
+                  placeholder="Nhập mã số"
+                />
+                <span class="sp-thongbao" id="tbMa"></span>
+              </div>
+              <div class="mb-3">
+                <label for="" class="form-label">Họ tên</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  name=""
+                  id="hoTen"
+                  aria-describedby="helpId"
+                  placeholder="Nhập họ và tên"
+                />
+                <span class="sp-thongbao" id="tbHoTen"></span>
+              </div>
+
+              <div class="mb-3">
+                <label for="" class="form-label">Email</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  name=""
+                  id="email"
+                  aria-describedby="helpId"
+                  placeholder="Nhập email"
+                />
+                <span class="sp-thongbao" id="tbEmail"></span>
+              </div>
+
+              <div class="mb-3">
+                <label for="" class="form-label">Địa chỉ</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  name=""
+                  id="diaChi"
+                  aria-describedby="helpId"
+                  placeholder="Nhập địa chỉ"
+                />
+                <span class="sp-thongbao" id="tbDiaChi"></span>
+              </div>
+
+              <div class="mb-3" id="txt_toan">
+                <label for="" class="form-label">Toán</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  name=""
+                  id="toan"
+                  aria-describedby="helpId"
+                  placeholder="Nhập toán"
+                />
+                <span class="sp-thongbao" id="tbToan"></span>
+              </div>
+
+              <div class="mb-3" id="txt_ly">
+                <label for="" class="form-label">Lý</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  name=""
+                  id="ly"
+                  aria-describedby="helpId"
+                  placeholder="Nhập lý"
+                />
+                <span class="sp-thongbao" id="tbLy"></span>
+              </div>
+
+              <div class="mb-3" id="txt_hoa">
+                <label for="" class="form-label">Hoá</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  name=""
+                  id="hoa"
+                  aria-describedby="helpId"
+                  placeholder="Nhập hoá"
+                />
+                <span class="sp-thongbao" id="tbHoa"></span>
+              </div>
+
+              <div class="mb-3" id="txt_soNgayLamViec">
+                <label for="" class="form-label">Số ngày làm việc</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  name=""
+                  id="soNgayLamViec"
+                  aria-describedby="helpId"
+                  placeholder="Nhập số ngày làm việc"
+                />
+                <span class="sp-thongbao" id="tbSoNgayLamViec"></span>
+              </div>
+
+              <div class="mb-3" id="txt_luong1Ngay">
+                <label for="" class="form-label">Lương một ngày</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  name=""
+                  id="luong1Ngay"
+                  aria-describedby="helpId"
+                  placeholder="Nhập lương một ngày"
+                />
+                <span class="sp-thongbao" id="tbLuong1Ngay"></span>
+              </div>
+
+              <div class="mb-3" id="txt_tenCongTy">
+                <label for="" class="form-label">Tên công ty</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  name=""
+                  id="tenCongTy"
+                  aria-describedby="helpId"
+                  placeholder="Nhập tên công ty"
+                />
+                <span class="sp-thongbao" id="tbTenCongTy"></span>
+              </div>
+
+              <div class="mb-3" id="txt_triGiaHoaDon">
+                <label for="" class="form-label">Trị giá hoá đơn:</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  name=""
+                  id="triGiaHoaDon"
+                  aria-describedby="helpId"
+                  placeholder="Nhập trị giá hoá đơn"
+                />
+                <span class="sp-thongbao" id="tbTriGiaHoaDon"></span>
+              </div>
+
+              <div class="mb-3" id="txt_danhGia">
+                <label for="" class="form-label">Đánh giá</label>
+                <textarea
+                  class="form-control"
+                  name=""
+                  id="danhGia"
+                  rows="3"
+                ></textarea>
+                <span class="sp-thongbao" id="tbDanhGia"></span>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Đóng
+            </button>
+            <button type="button" class="btn btn-primary" id="btn_ThemDuLieu">
+              Thêm
+            </button>
+            <button type="button" class="btn btn-success" id="btn_capNhap">
+              Cập nhập
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      var modalId = document.getElementById("modalId");
+
+      modalId.addEventListener("show.bs.modal", function (event) {
+        // Button that triggered the modal
+        let button = event.relatedTarget;
+        // Extract info from data-bs-* attributes
+        let recipient = button.getAttribute("data-bs-whatever");
+
+        // Use above variables to manipulate the DOM
+      });
+    </script>
+    <script>
+      function sortNames() {
+        var selectItem = document.getElementById("nameSelect");
+        var selectedOption = selectItem.options[selectItem.selectedIndex].value;
+        var tableBody = document.getElementById("tbodyTable");
+        var rows = Array.from(tableBody.getElementsByTagName("tr"));
+
+        rows.sort(function (a, b) {
+          var nameA = a.querySelector("td:nth-child(2)").textContent.trim();
+          var nameB = b.querySelector("td:nth-child(2)").textContent.trim();
+
+          if (selectedOption === "asc") {
+            return nameA.localeCompare(nameB);
+          } else if (selectedOption === "desc") {
+            return nameB.localeCompare(nameA);
+          }
+        });
+
+        // Xóa các hàng cũ trong tbody
+        while (tableBody.firstChild) {
+          tableBody.removeChild(tableBody.firstChild);
+        }
+
+        // Thêm lại các hàng đã được sắp xếp vào tbody
+        rows.forEach(function (row) {
+          tableBody.appendChild(row);
+        });
+      }
+    </script>
+
+    <script>
+      function filterDT() {
+        var selectElement = document.getElementById("select-doiTuongOutput");
+        var selectedOutput = selectElement.value;
+
+        var select_item = document.querySelectorAll(".select_item");
+        for (var i = 0; i < select_item.length; i++) {
+          var DtItem = select_item[i];
+          var dataOutput = DtItem.getAttribute("data-output");
+
+          if (selectedOutput === "All" || dataOutput === selectedOutput) {
+            DtItem.style.display = "block";
+          } else {
+            DtItem.style.display = "none";
+          }
+        }
+      }
+    </script>
+    <!-- Bootstrap JavaScript Libraries -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+      integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+      crossorigin="anonymous"
+    ></script>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+      integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+      crossorigin="anonymous"
+    ></script>
+    <script src="./validation/validation.js"></script>
+    <script type="module" src="./controllers/index.js"></script>
+  </body>
+</html>
