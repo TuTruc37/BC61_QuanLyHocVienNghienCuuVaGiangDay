@@ -120,7 +120,7 @@ document.getElementById("btn_ThemDuLieu").onclick = () => {
     console.log(person);
     assignCustomerValues(person, arrField);
   }
-
+  // validationValue(person);
   listPerson.addPersonToList(person);
   renderArr(listPerson.listP);
 
@@ -319,9 +319,10 @@ function searchUser(event) {
   console.log(newKeyWord);
   let arrUserFilter = [];
   console.log(listPerson);
-  for (let i = 0; i < listPerson.length; i++) {
-    console.log(listPerson[i]);
-    let User = listPerson[i];
+  for (let i = 0; i < listPerson.listP.length; i++) {
+    console.log(listPerson.listP[i]);
+    let User = listPerson.listP[i];
+    console.log(User);
     let newUser = removeVietnameseTones(User.hoTen.trim().toLowerCase());
     if (newUser.includes(newKeyWord)) {
       arrUserFilter.push(User);
@@ -375,26 +376,3 @@ let updateItem = () => {
   document.getElementById("ma").readOnly = false;
 };
 document.getElementById("btn_capNhap").onclick = updateItem;
-
-// document.getElementById("txt-Search").addEventListener("change", function (e) {
-//   let valueUser = e.target.value;
-//   console.log(valueUser);
-
-//   let keyword = valueUser.trim().toLowerCase();
-//   let newKeyWord = removeVietnameseTones(keyword);
-//   console.log(newKeyWord);
-//   let arrUserFilter = [];
-//   console.log(listPerson);
-//   for (let i = 0; i < listPerson.length; i++) {
-//     console.log(listPerson[i]);
-//     let User = listPerson[i];
-//     let newUser = removeVietnameseTones(User.hoTen.trim().toLowerCase());
-//     if (newUser.includes(newKeyWord)) {
-//       arrUserFilter.push(User);
-//     }
-//   }
-//   renderArr(arrUserFilter);
-//   console.log(arrUserFilter);
-// });
-
-//filter select đối tượng
