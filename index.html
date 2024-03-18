@@ -140,7 +140,7 @@
                   <option value="Employee">Employee</option>
                   <option value="Customer">Customer</option>
                 </select>
-                <span class="sp-thongbao" id="tbSelect"></span>
+                <span class="sp-thongbao text-danger" id="tbSelect"></span>
               </div>
               <div class="mb-3">
                 <label for="" class="form-label">Mã số</label>
@@ -152,7 +152,7 @@
                   aria-describedby="helpId"
                   placeholder="Nhập mã số"
                 />
-                <span class="sp-thongbao" id="tbMa"></span>
+                <span class="sp-thongbao text-danger" id="tbMa"></span>
               </div>
               <div class="mb-3">
                 <label for="" class="form-label">Họ tên</label>
@@ -164,7 +164,7 @@
                   aria-describedby="helpId"
                   placeholder="Nhập họ và tên"
                 />
-                <span class="sp-thongbao" id="tbHoTen"></span>
+                <span class="sp-thongbao text-danger" id="tbHoTen"></span>
               </div>
 
               <div class="mb-3">
@@ -177,7 +177,7 @@
                   aria-describedby="helpId"
                   placeholder="Nhập email"
                 />
-                <span class="sp-thongbao" id="tbEmail"></span>
+                <span class="sp-thongbao text-danger" id="tbEmail"></span>
               </div>
 
               <div class="mb-3">
@@ -190,7 +190,7 @@
                   aria-describedby="helpId"
                   placeholder="Nhập địa chỉ"
                 />
-                <span class="sp-thongbao" id="tbDiaChi"></span>
+                <span class="sp-thongbao text-danger" id="tbDiaChi"></span>
               </div>
 
               <div class="mb-3" id="txt_toan">
@@ -203,7 +203,7 @@
                   aria-describedby="helpId"
                   placeholder="Nhập toán"
                 />
-                <span class="sp-thongbao" id="tbToan"></span>
+                <span class="sp-thongbao text-danger" id="tbToan"></span>
               </div>
 
               <div class="mb-3" id="txt_ly">
@@ -216,7 +216,7 @@
                   aria-describedby="helpId"
                   placeholder="Nhập lý"
                 />
-                <span class="sp-thongbao" id="tbLy"></span>
+                <span class="sp-thongbao text-danger" id="tbLy"></span>
               </div>
 
               <div class="mb-3" id="txt_hoa">
@@ -229,7 +229,7 @@
                   aria-describedby="helpId"
                   placeholder="Nhập hoá"
                 />
-                <span class="sp-thongbao" id="tbHoa"></span>
+                <span class="sp-thongbao text-danger" id="tbHoa"></span>
               </div>
 
               <div class="mb-3" id="txt_soNgayLamViec">
@@ -242,7 +242,10 @@
                   aria-describedby="helpId"
                   placeholder="Nhập số ngày làm việc"
                 />
-                <span class="sp-thongbao" id="tbSoNgayLamViec"></span>
+                <span
+                  class="sp-thongbao text-danger"
+                  id="tbSoNgayLamViec"
+                ></span>
               </div>
 
               <div class="mb-3" id="txt_luong1Ngay">
@@ -255,7 +258,7 @@
                   aria-describedby="helpId"
                   placeholder="Nhập lương một ngày"
                 />
-                <span class="sp-thongbao" id="tbLuong1Ngay"></span>
+                <span class="sp-thongbao text-danger" id="tbLuong1Ngay"></span>
               </div>
 
               <div class="mb-3" id="txt_tenCongTy">
@@ -268,7 +271,7 @@
                   aria-describedby="helpId"
                   placeholder="Nhập tên công ty"
                 />
-                <span class="sp-thongbao" id="tbTenCongTy"></span>
+                <span class="sp-thongbao text-danger" id="tbTenCongTy"></span>
               </div>
 
               <div class="mb-3" id="txt_triGiaHoaDon">
@@ -281,7 +284,10 @@
                   aria-describedby="helpId"
                   placeholder="Nhập trị giá hoá đơn"
                 />
-                <span class="sp-thongbao" id="tbTriGiaHoaDon"></span>
+                <span
+                  class="sp-thongbao text-danger"
+                  id="tbTriGiaHoaDon"
+                ></span>
               </div>
 
               <div class="mb-3" id="txt_danhGia">
@@ -292,7 +298,7 @@
                   id="danhGia"
                   rows="3"
                 ></textarea>
-                <span class="sp-thongbao" id="tbDanhGia"></span>
+                <span class="sp-thongbao text-danger" id="tbDanhGia"></span>
               </div>
             </form>
           </div>
@@ -322,9 +328,9 @@
         // Button that triggered the modal
         let button = event.relatedTarget;
         // Extract info from data-bs-* attributes
-        console.log(button);
-        let recipient = button.getAttribute("data-bs-whatever");
-        // let recipient = button.getAttribute("data-custom-value");
+        // console.log(button);
+        // let recipient = button.getAttribute("data-bs-whatever");
+        let recipient = button.getAttribute("data-custom-value");
 
         // Use above variables to manipulate the DOM
       });
@@ -394,3 +400,6 @@
     <script type="module" src="./controllers/index.js"></script>
   </body>
 </html>
+
+<!-- Chị thấy bth, lúc nãy lỗi h load lại bth nhỉ -->
+<!-- Em click thêm, mà chưa validation form => mảng sẽ add 1 phần tử null vô -> render null sẽ ko có thuộc tính listPerson.listP nên bị lỗi -->

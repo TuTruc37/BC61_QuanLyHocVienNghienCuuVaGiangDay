@@ -3,7 +3,7 @@ export default class ListPerson {
   listP = [];
 
   addPersonToList = function (item) {
-    console.log(item);
+    // console.log(item);
     //thêm món ăn vào mảng
     this.listP.push(item);
   };

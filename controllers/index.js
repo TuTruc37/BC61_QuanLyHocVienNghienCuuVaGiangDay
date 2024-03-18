@@ -29,7 +29,7 @@ let quanLiInputSelect = () => {
   txt_triGiaHoaDon.style.display = "none";
   txt_danhGia.style.display = "none";
   selectDoiTuong.onchange = () => {
-    console.log(selectDoiTuong.value);
+    // console.log(selectDoiTuong.value);
     if (selectDoiTuong.value == "") {
       txt_toan.style.display = "none";
       txt_ly.style.display = "none";
@@ -78,20 +78,41 @@ let quanLiInputSelect = () => {
 document.getElementById("btn_themNguoiDung").onclick = quanLiInputSelect;
 
 function validationValue(user) {
+  // console.log(user); //user vẫn chưa có data
+
   var isValid = true;
   isValid &= checkSelectValue(user.select_doiTuongInput, "tbSelect");
   isValid &= checkEmptyValue(user.ma, "tbMa");
-  isValid &= checkEmptyValue(user.hoTen, "tbHoTen");
-  isValid &= checkEmptyValue(user.email, "tbEmail");
-  isValid &= checkEmailValue(user.diaChi, "tbDiaChi");
-  isValid &= checkEmptyValue(user.toan, "tbToan");
-  isValid &= checkEmptyValue(user.ly, "tbLy");
-  isValid &= checkEmptyValue(user.hoa, "tbHoa");
-  isValid &= checkEmptyValue(user.soNgayLamViec, "tbSoNgayLamViec");
-  isValid &= checkEmptyValue(user.luong1Ngay, "tbLuong1Ngay");
-  isValid &= checkEmptyValue(user.tenCongTy, "tbTenCongTy");
-  isValid &= checkEmptyValue(user.triGiaHoaDon, "tbTriGiaHoaDon");
-  isValid &= checkEmptyValue(user.danhGia, "tbDanhGia");
+  isValid &=
+    checkEmptyValue(user.hoTen, "tbHoTen") &&
+    checkNameValue(user.hoTen, "tbHoTen");
+  isValid &= checkEmailValue(user.email, "tbEmail");
+  isValid &= checkEmptyValue(user.diaChi, "tbDiaChi"); //check email đang truyền vô địa chi
+
+  // Tách trường hợp ra,Student thì ko check giờ làm việc,... => em check chung như vậy luôn luôn ra validation = false
+  if (user.select_doiTuongInput == "Student") {
+    isValid &=
+      checkEmptyValue(user.toan, "tbToan") &&
+      checkNumberValue(user.toan, "tbToan");
+
+    isValid &=
+      checkEmptyValue(user.ly, "tbLy") && checkNumberValue(user.ly, "tbLy");
+    isValid &=
+      checkEmptyValue(user.hoa, "tbHoa") && checkNumberValue(user.hoa, "tbHoa");
+  } else if (user.select_doiTuongInput == "Employee") {
+    isValid &=
+      checkEmptyValue(user.soNgayLamViec, "tbSoNgayLamViec") &&
+      checkNumberValue(user.soNgayLamViec, "tbSoNgayLamViec");
+    isValid &=
+      checkEmptyValue(user.luong1Ngay, "tbLuong1Ngay") &&
+      checkNumberValue(user.luong1Ngay, "tbLuong1Ngay");
+  } else if (user.select_doiTuongInput == "Customer") {
+    isValid &= checkEmptyValue(user.tenCongTy, "tbTenCongTy");
+    isValid &=
+      checkEmptyValue(user.triGiaHoaDon, "tbTriGiaHoaDon") &&
+      checkNumberValue(user.triGiaHoaDon, "tbTriGiaHoaDon");
+    isValid &= checkEmptyValue(user.danhGia, "tbDanhGia");
+  }
 
   if (!isValid) {
     return false;
@@ -106,32 +127,51 @@ document.getElementById("btn_ThemDuLieu").onclick = () => {
     "#formModal input, #formModal select, #formModal textarea"
   );
   let person;
+  let check;
+  //person lúc này là 1 biến undefine ko có dữ liệu, truyền vô validationValue ko có thôgn tin gì để check
+  //phần validation đang lỗi này
+  // console.log("run");
 
   if (selectDoiTuong.value === STUDENT) {
     person = new Student();
-    console.log("person", person);
     assignStudentValues(person, arrField);
+    check = validationValue(person);
+    // console.log(check); // nhập đầy đủ nhưng vẫn ra false, ko thấy text báo lỗi data nào
+    if (check) {
+      listPerson.addPersonToList(person);
+    }
   } else if (selectDoiTuong.value === EMPLOYEE) {
     person = new Employee();
-    console.log(person);
+    // console.log(person);
     assignEmployeeValues(person, arrField);
+    check = validationValue(person);
+    if (check) {
+      listPerson.addPersonToList(person);
+    }
   } else if (selectDoiTuong.value === CUSTOMER) {
     person = new Customer();
-    console.log(person);
     assignCustomerValues(person, arrField);
+    check = validationValue(person);
+    if (check) {
+      listPerson.addPersonToList(person);
+    }
   }
-  // validationValue(person);
-  listPerson.addPersonToList(person);
+
   renderArr(listPerson.listP);
 
-  // validationValue(person);
+  //validation phải chạy trước, này em đang add vô mảng xong mới validation mà => validation = true thì mới add vô mảng
+  // thấy mảng đang có 3 phần tử ko, 3 phần tử này ko có bất kỳ giá trị gì về listPerson.listP
+  // validationValue(listPerson.listP);
   // tắt modal
   var modalElement = document.getElementById("modalId");
   var modal = bootstrap.Modal.getInstance(modalElement);
-  modal.hide();
-  //clear dữ liệu trên form
-  document.getElementById("formModal").reset();
-  saveDataLocal();
+  if (check) {
+    modal.hide();
+    // clear dữ liệu trên form
+    document.getElementById("formModal").reset();
+    saveDataLocal();
+  }
+
   //validation
 };
 
@@ -140,7 +180,7 @@ function assignStudentValues(student, arrField) {
     const { id, value } = field;
     student[id] = value;
   });
-  console.log("student", student);
+  // console.log("student", student);
 }
 
 function assignEmployeeValues(employee, arrField) {
@@ -159,6 +199,7 @@ function assignCustomerValues(Customer, arrField) {
 const renderArr = (arr = listPerson.listP) => {
   let content = "";
   arr.forEach((user) => {
+    // console.log(user); //đang bị null
     // Kiểm tra loại ng dùng
     if (user.select_doiTuongInput == "Student") {
       let newStudent = new Student();
@@ -239,7 +280,7 @@ function getDataLocal() {
 getDataLocal();
 // hàm xoá
 function deleteItem(idItem) {
-  console.log(idItem);
+  // console.log(idItem);
   let index = listPerson.listP.findIndex((item) => item.ma === idItem);
   if (index !== -1) {
     listPerson.delteItem(index);
@@ -260,7 +301,7 @@ let getDetailPerson = (itemID) => {
     );
     arrField.forEach((field) => {
       let { id } = field;
-      console.log(id);
+      // console.log(id);
       field.value = item[id];
     });
     // Hoạt động
@@ -313,29 +354,29 @@ let getDetailPerson = (itemID) => {
 
 function searchUser(event) {
   let valueUser = event.target.value;
-  console.log(valueUser);
+  // console.log(valueUser);
   let keyword = valueUser.trim().toLowerCase();
   let newKeyWord = removeVietnameseTones(keyword);
-  console.log(newKeyWord);
+  // console.log(newKeyWord);
   let arrUserFilter = [];
-  console.log(listPerson);
+  // console.log(listPerson);
   for (let i = 0; i < listPerson.listP.length; i++) {
-    console.log(listPerson.listP[i]);
+    // console.log(listPerson.listP[i]);
     let User = listPerson.listP[i];
-    console.log(User);
+    // console.log(User);
     let newUser = removeVietnameseTones(User.hoTen.trim().toLowerCase());
     if (newUser.includes(newKeyWord)) {
       arrUserFilter.push(User);
     }
   }
   renderArr(arrUserFilter);
-  console.log(arrUserFilter);
+  // console.log(arrUserFilter);
 }
 window.searchUser = searchUser;
 
 window.onload = () => {
   window.deleteItem = (idItem) => {
-    console.log(idItem);
+    // console.log(idItem);
     deleteItem(idItem);
   };
   window.getDetailPerson = (idItem) => {

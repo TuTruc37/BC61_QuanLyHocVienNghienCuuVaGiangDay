@@ -20,18 +20,7 @@ function checkSelectValue(value, idSpan) {
     return true;
   }
 }
-function checkMinMaxValue(value, idSpan, min, max) {
-  var eleSpan = document.getElementById(idSpan);
-  var doDaiKyTu = value.length;
-  if (doDaiKyTu >= min && doDaiKyTu <= max) {
-    document.getElementById(idSpan).innerHTML = "";
-    return true;
-  } else {
-    eleSpan.style.display = "block";
-    eleSpan.innerHTML = `Vui lòng nhập tối thiểu ${min} ký tự và tối đa ${max} ký tự`;
-    return false;
-  }
-}
+
 //hàm tên nhân viên phải là chữ
 function checkNameValue(value, idSpan) {
   var eleSpan = document.getElementById(idSpan);
@@ -49,10 +38,12 @@ function checkNameValue(value, idSpan) {
 }
 function checkEmailValue(value, idSpan) {
   var eleSpan = document.getElementById(idSpan);
+  // console.log(eleSpan);
+  // console.log(value); //chưa lấy đc mail nên luôn là false
   const regexEmail =
     /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
   var isValid = regexEmail.test(value);
-  console.log(isValid);
+  // console.log(isValid);
   if (isValid) {
     eleSpan.innerHTML = "";
     return true;
@@ -93,4 +84,16 @@ function removeVietnameseTones(str) {
     " "
   );
   return str;
+}
+
+function checkNumberValue(value, idSpan) {
+  var eleSpan = document.getElementById(idSpan);
+  if (value >= 0) {
+    eleSpan.innerHTML = "";
+    return true;
+  } else {
+    eleSpan.style.display = "block";
+    eleSpan.innerHTML = "Vui lòng nhập số không phải là chữ";
+    return false;
+  }
 }
